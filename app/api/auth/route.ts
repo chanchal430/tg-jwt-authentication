@@ -3,37 +3,52 @@ import { validateTelegramWebAppData } from "@/utils/telegramAuth";
 import { cookies } from "next/headers";
 import { encrypt, SESSION_DURATION } from "@/utils/session";
 
+// Reusable helper to save user to DB via your internal API
+async function saveUserToDB(user: any) {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  if (!baseUrl) {
+    console.error("❌ NEXT_PUBLIC_BASE_URL is not defined");
+    return;
+  }
+
+  try {
+    const res = await fetch(`${baseUrl}/api/save-user`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(user),
+    });
+
+    if (!res.ok) {
+      console.error("❌ Failed to save user to DB:", await res.text());
+    }
+  } catch (err) {
+    console.error("❌ Error calling /api/save-user:", err);
+  }
+}
+
 export async function POST(request: Request) {
   const { initData } = await request.json();
 
   const validationResult = validateTelegramWebAppData(initData);
 
   if (validationResult.validatedData) {
-    console.log("Validation result: ", validationResult);
+    console.log("✅ Validation result:", validationResult);
+
     const user = validationResult.user;
 
-    // 🔥 Save user to database
-    try {
-      // await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || ''}/api/save-user`, {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(user),
-      // })
-      await fetch("/api/save-user", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user),
-      });
-    } catch (err) {
-      console.error("Failed to save user in DB:", err);
-    }
+    // ⬇ Save to DB
+    await saveUserToDB(user);
 
-    // ✅ Create a new session
+    // ⬇ Create JWT session with expiry
     const expires = new Date(Date.now() + SESSION_DURATION);
     const session = await encrypt({ user: { telegramId: user.id }, expires });
 
-    // ✅ Save session in a cookie
-    cookies().set("session", session, { expires, httpOnly: true });
+    // ⬇ Set cookie
+    cookies().set("session", session, {
+      expires,
+      httpOnly: true,
+      path: "/",
+    });
 
     return NextResponse.json({ message: "Authentication successful" });
   } else {

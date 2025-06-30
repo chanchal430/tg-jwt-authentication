@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { pool } from "@/utils/db"; // import pool from utility file
+import { pool } from "@/utils/db"; 
 
 export async function POST(req: NextRequest) {
   try {
