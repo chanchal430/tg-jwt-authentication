@@ -15,21 +15,23 @@ export async function POST(req: NextRequest) {
       username,
       language_code,
       is_premium,
+      photo_url,
       jwt,
     } = body;
 
     await pool.query(
-      `INSERT INTO telegram_user (id, first_name, last_name, username, language_code, is_premium)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
+      `INSERT INTO telegram_user (id, first_name, last_name, username, language_code, is_premium, photo_url, jwt)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
        ON CONFLICT (id) DO UPDATE SET 
          first_name = EXCLUDED.first_name,
          last_name = EXCLUDED.last_name,
          username = EXCLUDED.username,
          language_code = EXCLUDED.language_code,
-         is_premium = EXCLUDED.is_premium,  
+         is_premium = EXCLUDED.is_premium, 
+         photo_url = EXCLUDED.photo_url, 
          jwt = EXCLUDED.jwt`,
 
-      [id, first_name, last_name, username, language_code, is_premium, jwt]
+      [id, first_name, last_name, username, language_code, is_premium, photo_url, jwt]
     );
 
     return NextResponse.json({ status: "ok" });
