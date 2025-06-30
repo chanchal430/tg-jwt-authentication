@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
 
     await pool.query(
       `INSERT INTO telegram_user (id, first_name, last_name, username, language_code, is_premium)
-       VALUES ($1, $2, $3, $4, $5, $6)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
        ON CONFLICT (id) DO UPDATE SET 
          first_name = EXCLUDED.first_name,
          last_name = EXCLUDED.last_name,
