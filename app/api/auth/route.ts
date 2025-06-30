@@ -41,7 +41,14 @@ export async function POST(request: Request) {
 
     // ⬇ Create JWT session with expiry
     const expires = new Date(Date.now() + SESSION_DURATION);
-    const session = await encrypt({ user: { telegramId: user.id }, expires });
+    const session = await encrypt({
+      user: {
+        telegramId: user.id,
+        first_name: user.first_name,
+        username: user.username,
+      },
+      expires,
+    });
 
     // ⬇ Set cookie
     cookies().set("session", session, {
