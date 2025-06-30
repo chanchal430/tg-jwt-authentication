@@ -1,79 +1,101 @@
-# Make TON Telegram Mini App 2: JWT Authentication and Protected Routes
+# 🚀 Telegram Mini App: JWT Authentication + Protected Routes
 
-Welcome to the second guide in the **Make TON Telegram Mini App** series! This project demonstrates how to implement JWT authentication and protected routes in a Telegram Mini App using Next.js 14.
+Welcome to the second guide in the **Telegram Mini App** series!  
+This project shows how to integrate **JWT authentication** and **protected routing** in a Telegram Mini App using **Next.js 14**, **TypeScript**, and **Tailwind CSS**.
 
-## Project Overview
+---
 
-This Telegram Mini App showcases:
-- Setting up a Next.js 14 project with TypeScript and Tailwind CSS
-- Implementing JWT authentication for Telegram Mini Apps
-- Creating protected routes using middleware
-- Automatic token reissuance for extended user sessions
-- Basic TypeScript usage for type safety
+## 📌 Features
 
-## Prerequisites
+✅ Built with **Next.js 14**, **TypeScript**, and **Tailwind CSS**  
+✅ Secure **JWT-based authentication** for Telegram users  
+✅ **Middleware-protected routes**  
+✅ Automatic session revalidation (no forced logout!)  
+✅ Strong typing and structure for scalable apps
 
-- Node.js (version 14 or higher)
-- npm (comes with Node.js)
-- A Telegram account
-- A Telegram Bot Token
-- GitHub account
-- Vercel account
+---
 
-## Getting Started
+## 🔧 Prerequisites
 
-1. Clone the repository:
-   ```
-   git clone https://github.com/nikandr-surkov/Make-TON-Telegram-Mini-App-2.git
-   cd Make-TON-Telegram-Mini-App-2
-   ```
+Before you begin, make sure you have:
 
-2. Install dependencies:
-   ```
-   npm install
-   ```
+- [Node.js](https://nodejs.org/) v14 or higher
+- A [Telegram account](https://telegram.org/)
+- A [Telegram Bot](https://t.me/BotFather) + Bot Token
+- A [GitHub](https://github.com) account
+- A [Vercel](https://vercel.com) account
+- PostgreSQL database (e.g., from [Railway](https://railway.app))
 
-3. Create a `.env.local` file in the root directory and add your Telegram Bot Token and JWT secret:
-   ```
-   BOT_TOKEN=your_bot_token_here
-   JWT_SECRET=your_jwt_secret_here
+---
+
+## 🚀 Getting Started
+
+1. **Clone the repository**:
+
+   ```bash
+   git clone https://github.com/chanchal430/tg-jwt-authentication.git
+   cd tg-jwt-authentication
    ```
 
-## Deployment and Usage
+2. **🛠 Install dependencies**
 
-As this is a Telegram Mini App, you can't see the result directly in development mode. Follow these steps to deploy and use the app:
+```bash
+npm install
+```
 
-1. Push your code to a GitHub repository.
+3. **Configure environment variables**
+   Create a .env.local file in the root of your project:
 
-2. Sign up for a Vercel account if you haven't already.
+```
+BOT_TOKEN=your_telegram_bot_token
+JWT_SECRET=your_jwt_secret
+DATABASE_URL=your_postgres_connection_url
+NEXT_PUBLIC_BASE_URL=https://your-vercel-app-url.vercel.app
+```
 
-3. Connect your GitHub repository to Vercel and deploy the app.
+## 📲 Deploying to Vercel
 
-4. Once deployed, Vercel will provide you with a URL for your app.
+Since Telegram Mini Apps require a secure HTTPS endpoint, deploy the app before using it in Telegram.
 
-5. Use this URL to set up your Telegram Mini App:
-   - Go to [@BotFather](https://t.me/BotFather) on Telegram
-   - Send the command `/newapp` or choose to edit an existing bot
-   - Follow the prompts to set up your Mini App, using the Vercel URL as the Web App URL
+### Steps:
 
-6. Once set up, you can access your Mini App through Telegram on mobile devices or in the Web version of Telegram.
+1. Push your code to GitHub
+2. Connect the repository to [Vercel](https://vercel.com/)
+3. Set your environment variables in Vercel:
+   - `BOT_TOKEN`
+   - `JWT_SECRET`
+   - `DATABASE_URL`
+   - `NEXT_PUBLIC_BASE_URL`
+4. Deploy your project
 
-## Project Structure
+---
 
-- `app/page.tsx`: Main page component
-- `app/protected/page.tsx`: Protected page component
-- `app/api/auth/route.ts`: Authentication API route
-- `app/api/session/route.ts`: Session API route
-- `components/TelegramAuth.tsx`: Telegram authentication component
-- `middleware.ts`: Middleware for protecting routes
-- `utils/session.ts`: Session utility functions
-- `utils/telegramAuth.ts`: Telegram authentication utility functions
+## 🤖 Setting Up Telegram Mini App
 
-## YouTube Channel
+1. Open [@BotFather](https://t.me/BotFather) on Telegram
+2. Run `/newapp` or edit an existing bot
+3. When prompted, provide the following:
 
-For video tutorials and more in-depth explanations, check out my YouTube channel:
-[Nikandr Surkov](https://www.youtube.com/@NikandrSurkov)
+   - **Web App URL**:  
+     `https://your-vercel-app-url.vercel.app`
 
-## Next Steps
+   - **Short Name**
+   - **Description**
 
-Stay tuned for the next guide in the **Make TON Telegram Mini App** series, where we'll explore more advanced features and TON integration!
+✅ Once set , your Mini App will be available on Telegram mobile or web!
+
+## 🗂 Project Structure
+
+app/
+├─ api/
+│ ├─ auth/route.ts # Handles Telegram JWT authentication
+│ ├─ session/route.ts # Returns session data from JWT cookie
+│ ├─ save-user/route.ts # Saves authenticated user to PostgreSQL
+├─ page.tsx # Main landing page
+├─ profile/page.tsx # Example protected page
+components/
+├─ TelegramAuth.tsx # Telegram authentication logic (client-side)
+middleware.ts # JWT session validation middleware
+utils/
+├─ session.ts # JWT encryption/decryption helpers
+├─ telegramAuth.ts # Telegram data verification logic

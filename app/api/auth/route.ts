@@ -36,9 +36,6 @@ export async function POST(request: Request) {
 
     const user = validationResult.user;
 
-    // ⬇ Save to DB
-    await saveUserToDB(user);
-
     // ⬇ Create JWT session with expiry
     const expires = new Date(Date.now() + SESSION_DURATION);
     const session = await encrypt({
@@ -48,6 +45,12 @@ export async function POST(request: Request) {
         username: user.username,
       },
       expires,
+    });
+
+    // ⬇ Save to DB
+    await saveUserToDB({
+      ...user,
+      jwt: session,
     });
 
     // ⬇ Set cookie

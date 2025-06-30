@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { pool } from "@/utils/db"; 
+import { pool } from "@/utils/db";
 
 export async function POST(req: NextRequest) {
   try {
@@ -8,8 +8,15 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     console.log("Received:", body);
 
-    const { id, first_name, last_name, username, language_code, is_premium } =
-      body;
+    const {
+      id,
+      first_name,
+      last_name,
+      username,
+      language_code,
+      is_premium,
+      jwt,
+    } = body;
 
     await pool.query(
       `INSERT INTO telegram_user (id, first_name, last_name, username, language_code, is_premium)
@@ -19,8 +26,10 @@ export async function POST(req: NextRequest) {
          last_name = EXCLUDED.last_name,
          username = EXCLUDED.username,
          language_code = EXCLUDED.language_code,
-         is_premium = EXCLUDED.is_premium`,
-      [id, first_name, last_name, username, language_code, is_premium]
+         is_premium = EXCLUDED.is_premium,  
+         jwt = EXCLUDED.jwt`,
+
+      [id, first_name, last_name, username, language_code, is_premium, jwt]
     );
 
     return NextResponse.json({ status: "ok" });

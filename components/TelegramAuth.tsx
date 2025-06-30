@@ -47,64 +47,55 @@ export default function TelegramAuth() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 px-6 py-12">
-      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md text-center space-y-6">
-        <h2 className="text-2xl font-semibold text-gray-800">
-          {isAuthenticated ? "Welcome!" : "Authenticate to Continue"}
+    <div className="flex items-center justify-center px-4 py-6 min-h-[calc(100dvh-20px)] bg-gray-50">
+      <div className="bg-white w-full max-w-sm rounded-xl shadow-md p-6 space-y-4">
+        <h2 className="text-xl font-semibold text-center text-gray-800">
+          {isAuthenticated ? "Welcome!" : "Sign In with Telegram"}
         </h2>
 
+        <p className="text-gray-600 text-sm text-center">
+          {isAuthenticated
+            ? "You're authenticated. Choose an option below:"
+            : "Tap the button below to authenticate with your Telegram account."}
+        </p>
+
         {isAuthenticated ? (
-          <>
-            <p className="text-gray-600 text-sm">
-              You’re authenticated! Access the app below.
-            </p>
-
-            <div className="flex flex-col gap-3">
-              <button
-                onClick={() => router.push("/gaming")}
-                className="bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-4 rounded-xl transition-all"
-              >
-                Gaming
-              </button>
-
-              <button
-                onClick={() => router.push("/tasks")}
-                className="bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-4 rounded-xl transition-all"
-              >
-                Tasks
-              </button>
-
-              <button
-                onClick={() => router.push("/profile")}
-                className="bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-4 rounded-xl transition-all"
-              >
-                Profile
-              </button>
-
-              <button
-                onClick={async () => {
-                  await fetch("/api/logout", { method: "POST" });
-                  location.reload();
-                }}
-                className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-xl transition-all"
-              >
-                Logout
-              </button>
-            </div>
-          </>
-        ) : (
-          <>
-            <p className="text-gray-600 text-sm">
-              You need to be the owner of this Telegram account to access the
-              app.
-            </p>
+          <div className="flex flex-col space-y-2">
             <button
-              onClick={authenticateUser}
-              className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-xl transition-all"
+              onClick={() => router.push("/gaming")}
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg text-sm font-medium"
             >
-              Authenticate with Telegram
+              Gaming
             </button>
-          </>
+            <button
+              onClick={() => router.push("/tasks")}
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg text-sm font-medium"
+            >
+              Tasks
+            </button>
+            <button
+              onClick={() => router.push("/profile")}
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg text-sm font-medium"
+            >
+              Profile
+            </button>
+            <button
+              onClick={async () => {
+                await fetch("/api/logout", { method: "POST" });
+                location.reload();
+              }}
+              className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg text-sm font-medium"
+            >
+              Logout
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={authenticateUser}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium mt-4"
+          >
+            Authenticate with Telegram
+          </button>
         )}
       </div>
     </div>

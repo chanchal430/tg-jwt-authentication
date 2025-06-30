@@ -18,11 +18,11 @@ export default async function Home() {
             : "Explore the app by signing in below."}
         </p>
 
-        {isAuthenticated && (
+        {/* {isAuthenticated && (
           <div className="bg-gray-100 rounded-md text-left text-sm font-mono p-4 overflow-x-auto border">
             <pre>{JSON.stringify(session, null, 2)}</pre>
           </div>
-        )}
+        )} */}
 
         <TelegramAuth />
       </div>
