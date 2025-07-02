@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { getSession } from "@/utils/session";
 import Link from "next/link";
 import {
@@ -9,6 +10,7 @@ import {
 } from "lucide-react";
 
 export default async function ProfilePage() {
+  const router = useRouter();
   const session = await getSession();
   const firstName = session?.user?.first_name || "User";
 
@@ -16,7 +18,7 @@ export default async function ProfilePage() {
     <div className="flex flex-col min-h-screen bg-black text-white">
       {/* Header */}
       <div className="flex justify-between items-center px-4 py-4">
-        <div className="flex items-center">
+        <div className="flex items-center" onClick={() => router.back()}>
           <ChevronLeft className="w-6 h-6 text-white mr-2" />
           <span className="text-white font-medium">Back</span>
         </div>

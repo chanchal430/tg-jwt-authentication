@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
@@ -10,12 +11,28 @@ import {
   Smartphone,
 } from "lucide-react";
 
-// Example emoji flags and languages
+// Use local flag image paths
 const languages = [
-  { name: "English", code: "en", flag: "🇬🇧" },
-  { name: "Hindi", code: "hi", flag: "🇮🇳" },
-  { name: "Spanish", code: "es", flag: "🇪🇸" },
-  { name: "French", code: "fr", flag: "🇫🇷" },
+  {
+    name: "English",
+    code: "English",
+    flagUrl: "/flags/gb.png",
+  },
+  {
+    name: "Hindi",
+    code: "Hindi",
+    flagUrl: "/flags/in.png",
+  },
+  {
+    name: "Spanish",
+    code: "Spanish",
+    flagUrl: "/flags/es.png",
+  },
+  {
+    name: "French",
+    code: "French",
+    flagUrl: "/flags/fr.png",
+  },
 ];
 
 export default function SettingsPage() {
@@ -31,7 +48,7 @@ export default function SettingsPage() {
       <div className="flex justify-between items-center px-4 py-4">
         <div
           className="flex items-center cursor-pointer"
-          onClick={() => router.push("/profile")}
+          onClick={() => router.back()}
         >
           <ChevronLeft className="w-6 h-6 text-white mr-2" />
           <span className="text-white font-medium">Back</span>
@@ -51,15 +68,23 @@ export default function SettingsPage() {
           className="bg-gray-900 rounded-xl p-4 flex items-center justify-between cursor-pointer"
           onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
         >
-          <div className="flex items-center">
-            <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-xl mr-4">
-              {selectedLanguage.flag}
+          <div className="flex items-center space-x-4">
+            <div className="w-10 h-10 rounded-full overflow-hidden">
+              <Image
+                src={selectedLanguage.flagUrl}
+                alt={`${selectedLanguage.name} flag`}
+                width={40}
+                height={40}
+                className="object-cover"
+              />
             </div>
-            <div>
-              <h3 className="text-white font-semibold text-lg">
+            <div className="flex flex-col">
+              <span className="text-white font-medium text-base">
                 {selectedLanguage.name}
-              </h3>
-              <p className="text-gray-400 text-sm">{selectedLanguage.code}</p>
+              </span>
+              <span className="text-sm text-gray-400">
+                {selectedLanguage.name}
+              </span>
             </div>
           </div>
           <ChevronRight className="w-6 h-6 text-white" />
@@ -67,18 +92,24 @@ export default function SettingsPage() {
 
         {/* Language Dropdown */}
         {showLanguageDropdown && (
-          <div className="bg-gray-800 rounded-lg mt-1 overflow-hidden">
+          <div className="bg-gray-800 rounded-xl mt-2 overflow-hidden divide-y divide-gray-700">
             {languages.map((lang) => (
               <div
                 key={lang.code}
-                className="flex items-center px-4 py-2 hover:bg-gray-700 cursor-pointer"
+                className="flex items-center px-4 py-3 hover:bg-gray-700 cursor-pointer transition-all"
                 onClick={() => {
                   setSelectedLanguage(lang);
                   setShowLanguageDropdown(false);
                 }}
               >
-                <span className="text-xl mr-3">{lang.flag}</span>
-                <span className="text-white">{lang.name}</span>
+                <Image
+                  src={lang.flagUrl}
+                  alt={`${lang.name} flag`}
+                  width={24}
+                  height={24}
+                  className="rounded-full mr-3"
+                />
+                <span className="text-white text-sm">{lang.name}</span>
               </div>
             ))}
           </div>
